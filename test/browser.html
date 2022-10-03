@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xqshare browser test</title>
+    <link rel="stylesheet" href="../lib/css/xqshare.min.css">
+    <style>
+        #openBtn {
+            margin: 10px 5px;
+            padding: 5px 8px;
+            background-color: #f00;
+            border: none;
+            color: #fff;
+            font-size: 12px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>xqshare browser test</h3>
+    <div>
+        <button id="openBtn">分享到</button>
+    </div>
+    <div id="defaultShare"></div>
+    <div id="popShare"></div>
+    <div id="slideShare"></div>
+
+    <script src="../lib/js/xqshare.min.js"></script>
+    <script>
+
+        // 1.默认分享
+        let defaultShare = new XqShare({
+            el: '#defaultShare',
+            type: 'default',
+        });
+
+        // 2.弹出框分享
+        let popShare = new XqShare({
+            el: '#popShare',
+            type: 'pop',
+        });
+
+        let openBtn = document.querySelector('#openBtn');
+        openBtn.addEventListener('click', showShare, false);
+        function showShare () {  
+            popShare.show();
+        }
+
+        // 3.右侧悬浮框分享
+        let slideShare = new XqShare({
+            el: '#slideShare',
+            type: 'slide',
+        });
+
+    </script>
+</body>
+
+</html>

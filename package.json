@@ -1,0 +1,28 @@
+{
+"name": "xqshare",
+"version": "0.0.1",
+"description": "This is a js share libiary.",
+"main": "lib/js/xqshare.js",
+"directories": {
+    "lib": "lib",
+    "test": "test"
+},
+"scripts": {
+    "test": "echo Error: no test specified && exit 1",
+    "test:browser": "live-server --port=4001 --host=localhost"
+},
+"repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitguanqi/xqshare.git"
+},
+"keywords": [
+    "share",
+    "xqshare"
+],
+"author": "gitguanqi",
+"license": "MIT",
+"bugs": {
+    "url": "https://github.com/gitguanqi/xqshare/issues"
+},
+"homepage": "https://github.com/gitguanqi/xqshare#readme"
+}
