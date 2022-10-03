@@ -1,8 +1,8 @@
 {
 "name": "xqshare",
-"version": "0.0.1",
+"version": "0.0.2",
 "description": "This is a js share libiary.",
-"main": "lib/js/xqshare.js",
+"main": "lib/vue/index.js",
 "directories": {
     "lib": "lib",
     "test": "test"
