@@ -291,9 +291,9 @@ export default {
 
 /* default mode */
 .default {
+    box-sizing: border-box;
     padding: 10px;
-    max-width: 410px;
-    width: auto;
+    width: 100%;
     border-radius: 4px;
     border: 1px solid #ccc;
 }
@@ -304,6 +304,7 @@ export default {
 .default .xqshare-inner .xqshare-tip,
 .slide .xqshare-inner .xqshare-tip {
     display: inline-block;
+    width: 50px;
     font-size: 14px;
 }
 .default .xqshare-inner .xqshare-title,
@@ -312,9 +313,10 @@ export default {
 }
 
 .default .xqshare-inner ul {
+    flex: 1;
     align-items: center;
     margin-bottom: 0;
-    width: 350px;
+    max-width: 350px;
     height: 25px;
 }
 .default .xqshare-inner ul li {
