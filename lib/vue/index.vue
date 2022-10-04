@@ -9,9 +9,9 @@
                             :title="item.name"><span :data-type="item.val">{{item.name}}</span></li>
                 </ul>
                 <div class="xqshare-urls">
-                    <p><span>预览地址</span><input id="previewUrl" type="text" disabled="true" :value="pop.url"><small id="copyUrl">复制</small></p>
+                    <p><span>预览地址</span><input id="previewUrl" type="text" disabled="true" :value="pop.url"><small id="copyUrl" @click="copyText('#previewUrl')">复制</small></p>
                     <p><span>嵌入代码</span><input id="iframeUrl" type="text" disabled="true" :value="pop.iframeUrl"><input type="hidden" id="iframe-url"
-                            value=""><small  id="copyIframe">复制</small></p>
+                            value=""><small  id="copyIframe" @click="copyText('#iframeUrl')">复制</small></p>
                 </div>
             </div>
         </div>
@@ -72,6 +72,7 @@ export default {
                 isHide: false,
                 url: '',
                 iframeUrl: '',
+                title: '',
             },
             slide: {
                 isHide: false,
@@ -81,7 +82,11 @@ export default {
     watch: {
         'show': function (val) {  
             this.pop.isHide = val;
-        }
+        },
+        'url': function (val) {  
+            this.pop.url = val;
+            this.pop.iframeUrl = `<iframe src='${val}' frameborder=0></iframe>`;
+        },
     },
     mounted() {
         this.pop.isHide = this.show;
@@ -111,6 +116,18 @@ export default {
                 title: this.title,
             }
             this.xqShare(params.type, params.url, params.title);
+        },
+        copyText (id) {
+            let txt = document.querySelector(id).value;
+            if (!txt) return;
+            let oIpt = document.createElement('input');
+            oIpt.value = txt;
+            document.body.appendChild(oIpt);
+            oIpt.select();
+            document.execCommand("Copy");
+            document.body.removeChild(oIpt);
+            alert('复制成功！');
+            return true;
         },
         /*
         author: fegq,
