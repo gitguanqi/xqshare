@@ -2,13 +2,13 @@
     <div class="xqshare" v-show="pop.isHide">
         <div :class="{'xqshare-box': true, [type]: true, 'active': slide.isHide}">
             <div class="xqshare-inner">
-                <div class="xqshare-title"><span>分享预览页面</span><strong @click="hideShare">X</strong></div>
-                <span class="xqshare-tip" @click="toggleSlide">分享至</span>
+                <div class="xqshare-title" v-if="type==='pop'"><span>分享预览页面</span><strong @click="hideShare">X</strong></div>
+                <span class="xqshare-tip" @click="toggleSlide" v-if="type!=='pop'">分享至</span>
                 <ul class="xqshare-ls">
                     <li @click="shareAddr(item.val)" v-for="item in shares" :key="item.id" :data-type="item.val"><img :data-type="item.val" :src="`${baseUrl}img/share_${item.val}.png`" :alt="item.name"
                             :title="item.name"><span :data-type="item.val">{{item.name}}</span></li>
                 </ul>
-                <div class="xqshare-urls">
+                <div class="xqshare-urls" v-if="type==='pop'">
                     <p><span>预览地址</span><input id="previewUrl" type="text" disabled="true" :value="pop.url"><small id="copyUrl" @click="copyText('#previewUrl')">复制</small></p>
                     <p><span>嵌入代码</span><input id="iframeUrl" type="text" disabled="true" :value="pop.iframeUrl"><input type="hidden" id="iframe-url"
                             value=""><small  id="copyIframe" @click="copyText('#iframeUrl')">复制</small></p>
@@ -254,6 +254,7 @@ export default {
     align-items: flex-start;
     padding-bottom: 10px;
     margin-bottom: 15px;
+    width: 100%;
     height: 20px;
     color: #333;
     font-size: 16px;
@@ -265,13 +266,9 @@ export default {
     cursor: pointer
 }
 
-.pop .xqshare-inner .xqshare-tip {
-    display: none;
-}
-
 .pop .xqshare-inner .xqshare-urls {
-    display: block;
     margin-top: 20px;
+    width: 100%;
 }
 
 .pop .xqshare-inner .xqshare-urls p {
@@ -324,10 +321,6 @@ export default {
     width: 50px;
     font-size: 14px;
 }
-.default .xqshare-inner .xqshare-title,
-.slide .xqshare-inner .xqshare-title {
-    display: none;
-}
 
 .default .xqshare-inner ul {
     flex: 1;
@@ -347,11 +340,6 @@ export default {
     margin-left: 5px;
     margin-top: 0;
 }
-.default .xqshare-inner .xqshare-urls,
-.slide .xqshare-inner .xqshare-urls {
-    display: none;
-}
-
 /* slide model */
 .slide {
     position: fixed;
@@ -388,11 +376,9 @@ export default {
 
 .slide .xqshare-inner .xqshare-ls {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    box-sizing: border-box;
     margin-bottom: 0;
-    padding: 10px 30px;
-    width: auto;
+    width: 92px;
     height: 100%;
     background: #fff;
     border: 2px solid #d32d2d;
