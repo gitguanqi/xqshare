@@ -41,7 +41,7 @@ export default {
     name: 'xqshare',
     data() {
         return {
-            baseUrl: 'https://unpkg.com/xqshare/lib/',
+            baseUrl: 'https://xqgj.cc/xqcdn/libs/xqshare/',
             shares: [{
                     id: 1,
                     name: 'qq',

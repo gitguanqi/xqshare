@@ -12,9 +12,9 @@ import cdn
 
 ```html
 <!-- style -->
-<link rel="stylesheet" href="https://unpkg.com/xqshare/lib/css/xqshare.min.css">
+<link rel="stylesheet" href="https://xqgj.cc/xqcdn/libs/xqshare/css/xqshare.min.css">
 <!-- browser -->
-<script src="https://unpkg.com/xqshare/lib/js/xqshare.min.js"></script>
+<script src="https://xqgj.cc/xqcdn/libs/xqshare/js/xqshare.min.js"></script>
 <!-- es module -->
 <script type="module">
     import xqshare from '../lib/js/xqshare-esm.min.js';
@@ -100,7 +100,7 @@ export default {
 
 Run this script to view the demonstration case: `npm run test:browser`.
 
-+ [demo](https://unpkg.com/xqshare/test/browser.html)
++ [demo](https://xqgj.cc/xqshare/test/browser.html)
 
 ## ask questions
 

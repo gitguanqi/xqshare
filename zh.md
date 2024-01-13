@@ -12,9 +12,9 @@
 
 ```html
 <!-- 样式 -->
-<link rel="stylesheet" href="https://unpkg.com/xqshare/lib/css/xqshare.min.css">
+<link rel="stylesheet" href="https://xqgj.cc/xqcdn/libs/xqshare/css/xqshare.min.css">
 <!-- 游览器es5 -->
-<script src="https://unpkg.com/xqshare/lib/js/xqshare.min.js"></script>
+<script src="https://xqgj.cc/xqcdn/libs/xqshare/js/xqshare.min.js"></script>
 <!-- es6模块 -->
 <script type="module">
     import xqshare from './lib/js/xqshare-esm.min.js';
@@ -100,7 +100,7 @@ export default {
 
 运行这个脚本查看展示案例：`npm run test:browser`。
 
-+ [点击体验](https://unpkg.com/xqshare/test/browser.html)
++ [点击体验](https://xqgj.cc/xqshare/test/browser.html)
 
 ## 提问题
 
