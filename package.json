@@ -1,28 +1,73 @@
 {
-"name": "xqshare",
-"version": "0.0.6",
-"description": "This is a js share libiary.",
-"main": "lib/vue/index.js",
-"directories": {
+  "name": "xqshare",
+  "version": "0.1.0",
+  "description": "A small share widget (default / pop / slide) for browsers, a UMD global, an ES module and a Vue 2/3 component.",
+  "main": "lib/js/xqshare.js",
+  "module": "lib/js/xqshare-esm.mjs",
+  "browser": "lib/js/xqshare.min.js",
+  "unpkg": "lib/js/xqshare.min.js",
+  "jsdelivr": "lib/js/xqshare.min.js",
+  "types": "lib/types/index.d.ts",
+  "files": [
+    "lib",
+    "zh.md",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "import": "./lib/js/xqshare-esm.mjs",
+      "require": "./lib/js/xqshare.js",
+      "default": "./lib/js/xqshare.js"
+    },
+    "./vue": {
+      "types": "./lib/types/vue/index.d.ts",
+      "import": "./lib/vue/index.js",
+      "default": "./lib/vue/index.js"
+    },
+    "./lib/vue/index.vue": "./lib/vue/xqshare.vue",
+    "./css/*": "./lib/css/*",
+    "./lib/*": "./lib/*",
+    "./package.json": "./package.json"
+  },
+  "directories": {
     "lib": "lib",
     "test": "test"
-},
-"scripts": {
-    "test": "echo Error: no test specified && exit 1",
-    "test:browser": "live-server --port=4001 --host=localhost"
-},
-"repository": {
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "node scripts/build.mjs",
+    "pretest": "node scripts/build.mjs",
+    "test": "node --test test/package.test.mjs test/share-url.test.mjs test/bundle.test.mjs test/vue.test.mjs test/browser-pages.test.mjs",
+    "test:browser": "node scripts/demo-server.mjs",
+    "test:browser:check": "node scripts/test-browser.mjs",
+    "verify": "npm run typecheck && npm test && npm run test:browser:check"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "share",
+    "social-share",
+    "qzone",
+    "weibo",
+    "vue",
+    "xqshare"
+  ],
+  "author": "gitguanqi",
+  "license": "MIT",
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/gitguanqi/xqshare.git"
-},
-"keywords": [
-    "share",
-    "xqshare"
-],
-"author": "gitguanqi",
-"license": "MIT",
-"bugs": {
+  },
+  "bugs": {
     "url": "https://github.com/gitguanqi/xqshare/issues"
-},
-"homepage": "https://github.com/gitguanqi/xqshare#readme"
+  },
+  "homepage": "https://github.com/gitguanqi/xqshare#readme",
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
 }

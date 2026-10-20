@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xqshare test pages</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./demo.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <a class="brand" href="./">
+            <img src="./icon.svg" alt="" width="30" height="30">
+            <span>xqshare test lab</span>
+        </a>
+        <nav aria-label="Test pages">
+            <a href="./browser.html">UMD</a>
+            <a href="./esm.html">ESM</a>
+            <a href="./vue2.html">Vue 2</a>
+            <a href="./vue3.html">Vue 3</a>
+        </nav>
+    </header>
+    <main class="shell">
+        <section class="status-band index-band">
+            <div>
+                <p class="eyebrow">Committed build verification</p>
+                <h1>Choose a consumption path</h1>
+                <p class="lede">Every page runs its own visible checks against the files in lib/.</p>
+            </div>
+        </section>
+        <section class="page-grid" aria-label="Available test pages">
+            <a class="page-link" href="./browser.html">
+                <span class="page-number">01</span>
+                <strong>UMD browser build</strong>
+                <span>Global constructor, scoped markup, three modes, clipboard, and teardown.</span>
+            </a>
+            <a class="page-link" href="./esm.html">
+                <span class="page-number">02</span>
+                <strong>ES module build</strong>
+                <span>Default/named export identity plus the same core behavior suite.</span>
+            </a>
+            <a class="page-link" href="./vue2.html">
+                <span class="page-number">03</span>
+                <strong>Vue 2 wrapper</strong>
+                <span>Pinned Vue 2 runtime, shipped plugin, mount and teardown.</span>
+            </a>
+            <a class="page-link" href="./vue3.html">
+                <span class="page-number">04</span>
+                <strong>Vue 3 wrapper</strong>
+                <span>Pinned Vue 3 runtime, shipped plugin, mount and teardown.</span>
+            </a>
+        </section>
+    </main>
+</body>
+
+</html>

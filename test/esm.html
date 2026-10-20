@@ -3,64 +3,66 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xqshare esm test</title>
+    <title>xqshare ESM test</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../lib/css/xqshare.min.css">
-    <style>
-        #openBtn {
-            margin: 10px 5px;
-            padding: 5px 8px;
-            background-color: #f00;
-            border: none;
-            color: #fff;
-            font-size: 12px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px #ccc;
-            cursor: pointer;
-        }
-        #defaultShare {
-            width: 400px;
-        }
-    </style>
+    <link rel="stylesheet" href="./demo.css">
 </head>
 
 <body>
-    <h3>xqshare esm test</h3>
-    <div>
-        <button id="openBtn">分享到</button>
-    </div>
-    <div id="defaultShare"></div>
-    <div id="popShare"></div>
-    <div id="slideShare"></div>
+    <header class="site-header">
+        <a class="brand" href="./">
+            <img src="./icon.svg" alt="" width="30" height="30">
+            <span>xqshare test lab</span>
+        </a>
+        <nav aria-label="Test pages">
+            <a href="./browser.html">UMD</a>
+            <a href="./esm.html" aria-current="page">ESM</a>
+            <a href="./vue2.html">Vue 2</a>
+            <a href="./vue3.html">Vue 3</a>
+        </nav>
+    </header>
+    <main class="shell">
+        <section class="status-band">
+            <div>
+                <p class="eyebrow">ES module bundle</p>
+                <h1>ESM runtime</h1>
+            </div>
+            <div id="summary" class="status-badge is-running" data-status="running" aria-live="polite">RUNNING</div>
+        </section>
+        <section class="workspace" aria-label="ESM checks">
+            <div class="workbench">
+                <div class="test-stage" id="shareHost" aria-label="default widget"></div>
+                <div class="test-stage-grid">
+                    <div class="test-stage" id="popHost" aria-label="pop widget"></div>
+                    <div class="test-stage" id="slideHost" aria-label="slide widget"></div>
+                </div>
+                <div class="test-stage-grid">
+                    <div class="test-stage" id="dupA" aria-label="first duplicate"></div>
+                    <div class="test-stage" id="dupB" aria-label="second duplicate"></div>
+                </div>
+            </div>
+            <aside class="checks-panel">
+                <h2>Checks</h2>
+                <ol id="checks" class="check-list"></ol>
+                <pre id="details" class="check-details">Waiting for checks.</pre>
+            </aside>
+        </section>
+    </main>
 
     <script type="module">
-        import XqShare from '../lib/js/xqshare-esm.min.js';
+        import xqshare, { XqShare as NamedXqShare } from '../lib/js/xqshare-esm.min.js';
+        import { coreChecks } from './share-demo.js';
+        import { createCheckRunner } from './checks.js';
 
-        // 1.默认分享
-        let defaultShare = new XqShare({
-            el: '#defaultShare',
-            type: 'default',
-        });
-
-        // 2.弹出框分享
-        let popShare = new XqShare({
-            el: '#popShare',
-            type: 'pop',
-        });
-
-        let openBtn = document.querySelector('#openBtn');
-        openBtn.addEventListener('click', showShare, false);
-        function showShare () {  
-            popShare.show();
+        if (xqshare !== NamedXqShare) {
+            throw new Error('default and named exports are different constructors');
         }
-
-        // 3.右侧悬浮框分享
-        let slideShare = new XqShare({
-            el: '#slideShare',
-            type: 'slide',
-        });
-
+        document.documentElement.dataset.xqshareModule = 'ready';
+        window.XqShare = xqshare;
+        const runner = createCheckRunner({ page: 'esm' });
+        await runner.run(coreChecks(xqshare, 'ESM'));
     </script>
 </body>
 

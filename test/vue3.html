@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xqshare Vue 3 test</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../lib/css/xqshare.min.css">
+    <link rel="stylesheet" href="./demo.css">
+</head>
+
+<body data-vue-major="3">
+    <header class="site-header">
+        <a class="brand" href="./">
+            <img src="./icon.svg" alt="" width="30" height="30">
+            <span>xqshare test lab</span>
+        </a>
+        <nav aria-label="Test pages">
+            <a href="./browser.html">UMD</a>
+            <a href="./esm.html">ESM</a>
+            <a href="./vue2.html">Vue 2</a>
+            <a href="./vue3.html" aria-current="page">Vue 3</a>
+        </nav>
+    </header>
+    <main class="shell">
+        <section class="status-band">
+            <div>
+                <p class="eyebrow">Vue 3 wrapper</p>
+                <h1>Vue 3 single component</h1>
+            </div>
+            <div id="summary" class="status-badge is-running" data-status="running" aria-live="polite">RUNNING</div>
+        </section>
+        <section class="workspace" aria-label="Vue 3 checks">
+            <div class="workbench">
+                <div id="app" class="test-stage"></div>
+            </div>
+            <aside class="checks-panel">
+                <h2>Checks</h2>
+                <ol id="checks" class="check-list"></ol>
+                <pre id="details" class="check-details">Waiting for checks.</pre>
+            </aside>
+        </section>
+    </main>
+
+    <script src="./vendor/vue-3.5.13.global.prod.js"></script>
+    <script src="../lib/js/xqshare.min.js"></script>
+    <script src="./vue-xqshare.component.js"></script>
+    <script type="module">
+        import './vue-checks.js';
+    </script>
+</body>
+
+</html>
