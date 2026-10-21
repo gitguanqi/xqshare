@@ -244,9 +244,10 @@
 
 .slide {
     position: fixed;
-    /* Upper-middle of the right edge: `top: 30%` + translateY(-50%) puts the
-       drawer's center a third down the viewport instead of dead-center. */
-    top: 30%;
+    /* Centered on the right edge: the box spans the viewport middle, and the
+       tip itself is centred inside it (see `.xqshare-inner`), so the red tab
+       sits mid-screen instead of hugging the top of the drawer. */
+    top: 50%;
     right: 0;
     height: 300px;
     /* Collapsed shows exactly the 40px tip: translate by the element's own
@@ -265,7 +266,9 @@
 .slide .xqshare-inner {
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
+    /* Centers the 100px tip inside the 300px box; the drawer keeps its own
+       `height: 100%` so it still fills the frame. */
+    align-items: center;
     height: 100%;
 }
 

@@ -47,10 +47,11 @@ component is now a thin host around that core.
 - Vue component registered as `xqShare` (`<xq-share>`); `v-model` / `:show` both
   bind visibility and emit `update:*` events.
 - Build target raised to **ES2018**; IE is no longer supported.
-- Slide mode sits at the upper-middle of the right viewport edge (`top: 30%`)
-  instead of dead-center; the collapsed state hides the whole drawer
-  (`translate(calc(100% - 40px))`), and the expanded drawer fills its 300px
-  frame with evenly spaced targets instead of cramming them into a 50px band.
+- Slide mode keeps its tab centered on the right edge (the tip is centred
+  inside the 300px drawer, and the box straddles the viewport middle); the
+  collapsed state hides the whole drawer (`translate(calc(100% - 40px))`), and
+  the expanded drawer fills its frame with evenly spaced targets instead of
+  cramming them into a 50px band.
 
 ### Fixed
 - Strict-mode `event` global reference that crashed the ESM build in Firefox.

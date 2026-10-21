@@ -6,7 +6,7 @@ const runner = createCheckRunner({ page: `vue-${major}` });
 const appRoot = document.querySelector('#app');
 
 const SLIDE_NOTE =
-  '该模式固定在浏览器窗口右缘（中上），看本页右侧的红色“分享至”标签，点它可展开/收起。';
+  '该模式固定在浏览器窗口右缘（垂直居中），看本页右侧的红色“分享至”标签，点它可展开/收起。';
 
 /**
  * Builds one captioned stage inside #app and returns its pieces, mirroring the

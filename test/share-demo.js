@@ -147,7 +147,7 @@ export function coreChecks(XqShare, label) {
       () => {
         const host = document.querySelector('#slideHost');
         prepareStage(host, 'slide', {
-          note: '该模式固定在浏览器窗口右缘（中上），看本页右侧的红色“分享至”标签；点它可展开/收起。',
+          note: '该模式固定在浏览器窗口右缘（垂直居中），看本页右侧的红色“分享至”标签；点它可展开/收起。',
         });
         const slide = mountWidget(XqShare, {
           host,
