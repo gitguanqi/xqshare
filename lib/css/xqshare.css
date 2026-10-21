@@ -249,9 +249,10 @@
     top: 30%;
     right: 0;
     height: 300px;
-    /* Animating a transform keeps the transition off the layout path; the old
-       build animated `right`, which forced a reflow on every frame. */
-    transform: translate(92px, -50%);
+    /* Collapsed shows exactly the 40px tip: translate by the element's own
+       width minus the tip, so a drawer of any width hides completely (the old
+       hardcoded 92px left a white sliver of the drawer sticking out). */
+    transform: translate(calc(100% - 40px), -50%);
     transition: transform .35s ease;
     will-change: transform;
     z-index: 998;
@@ -266,6 +267,13 @@
     justify-content: space-between;
     align-items: stretch;
     height: 100%;
+}
+
+.slide .xqshare-inner ul {
+    /* The base rule caps every list at 50px, which crammed the five targets
+       into a thin band and left the drawer frame mostly empty. Fill it. */
+    height: 100%;
+    margin-bottom: 0;
 }
 
 .slide .xqshare-tip {
@@ -284,9 +292,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
     margin-bottom: 0;
-    padding: 10px 30px;
+    padding: 20px 24px;
     width: auto;
+    min-width: 150px;
     height: 100%;
     background: #fff;
     border: 2px solid #d32d2d;
@@ -305,7 +315,7 @@
 
 .slide .xqshare-item span {
     margin-top: 0;
-    margin-left: 6px;
+    margin-left: 10px;
 }
 
 @media (prefers-reduced-motion: reduce) {
