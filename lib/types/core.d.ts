@@ -23,6 +23,7 @@ export declare class XqShare {
     private fields;
     private readonly bag;
     private statusTimer;
+    private popHiddenTimer;
     private scrollLocked;
     private lastTrigger;
     private disposed;
@@ -47,6 +48,27 @@ export declare class XqShare {
     private attach;
     private teardown;
     private applyVisibility;
+    /**
+     * Reveals the pop modal.
+     *
+     * The closed state is guarded by *inline* styles (see `closePop`) so the panel
+     * can never flash visible before `xqshare.css` is applied. Those inline guards
+     * are dropped here so the stylesheet's `.pop` / `.pop.active` rules take over;
+     * because `display` stays `flex`, the browser has already painted the hidden
+     * frame, so the fade + lift transitions animate from a real "from" state.
+     */
+    private openPop;
+    /**
+     * Hides the pop modal.
+     *
+     * The hard hidden state is enforced with inline styles rather than the
+     * stylesheet so an unstyled modal (CSS not yet parsed) can never paint for a
+     * frame on initial load — that "flash then hide" was the reported regression.
+     * On the very first paint (`immediate`) the guards go on right away; on a
+     * user-driven close they are re-applied only after the transition finishes so
+     * the fade-out still plays.
+     */
+    private closePop;
     private toggleDrawer;
     private onClick;
     private onKeydown;

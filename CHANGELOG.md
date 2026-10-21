@@ -66,6 +66,13 @@ component is now a thin host around that core.
   nothing.
 - `transition: all` animating `right` (layout thrash) and missing `<img>`
   dimensions (CLS).
+- Pop modal flashing visible for one frame on initial load: the closed panel was
+  hidden only by `xqshare.css`, so when a consumer's bundler injects that CSS
+  after the JS runs the modal painted as unstyled content, then hid once the
+  stylesheet applied. The closed pop is now hidden with inline styles at
+  construction (`opacity: 0; visibility: hidden; pointer-events: none`), which is
+  independent of the stylesheet, while `show()`/`hide()` still drive the
+  CSS-based fade + lift animation.
 
 ### Migration
 See `README.md` / `zh.md` "Migrating from 0.0.x" for the breaking changes and the

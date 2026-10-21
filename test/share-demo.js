@@ -132,6 +132,20 @@ export function coreChecks(XqShare, label) {
           url: 'https://example.com/pop',
         });
         assert.equal(pop.visible, false, 'pop should start hidden');
+        // FOUC guard: the closed modal must hide via inline styles so it can
+        // never flash visible on first paint before the stylesheet is applied.
+        const popBox = pop.element.querySelector('.xqshare-box');
+        assert.equal(popBox.style.opacity, '0', 'closed pop must hide via inline opacity');
+        assert.equal(
+          popBox.style.visibility,
+          'hidden',
+          'closed pop must hide via inline visibility',
+        );
+        assert.equal(
+          popBox.style.pointerEvents,
+          'none',
+          'closed pop must not capture clicks while hidden',
+        );
         pop.show();
         assert.equal(pop.visible, true);
         assert.equal(document.body.style.overflow, 'hidden', 'body scroll should lock');
