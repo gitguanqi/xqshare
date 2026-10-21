@@ -2,7 +2,7 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { dirname, extname, isAbsolute, relative, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -82,10 +82,27 @@ export function createTestServer({ root = REPO_ROOT, host = '127.0.0.1', port = 
   return server;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// `import.meta.url === \`file://${process.argv[1]}\`` never matches on Windows
+// (backslashes + drive letter vs. a real file URL), so the server silently
+// exited without listening. Compare normalised file URLs instead.
+const isMainModule = Boolean(process.argv[1]) &&
+  pathToFileURL(resolve(process.argv[1])).href.toLowerCase() ===
+    import.meta.url.toLowerCase();
+
+if (isMainModule) {
   const host = process.env.HOST || '127.0.0.1';
   const port = Number(process.env.PORT || 4173);
   const server = createTestServer({ root: REPO_ROOT, host, port });
+
+  server.on('error', (error) => {
+    if (error && error.code === 'EADDRINUSE') {
+      console.error(`Port ${port} is already in use. Try: PORT=4174 npm run test:browser`);
+    } else {
+      console.error(error);
+    }
+    process.exitCode = 1;
+  });
+
   server.listen(port, host, () => {
     const base = `http://${host}:${port}`;
     console.log('xqshare test pages:');
@@ -93,5 +110,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.log(`${base}/test/esm.html`);
     console.log(`${base}/test/vue2.html`);
     console.log(`${base}/test/vue3.html`);
+    console.log('Press Ctrl+C to stop.');
   });
 }
