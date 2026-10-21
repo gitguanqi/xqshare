@@ -159,7 +159,9 @@ export function coreChecks(XqShare, label) {
         tip.click();
         assert.equal(tip.getAttribute('aria-expanded'), 'false');
         assert.equal(box.classList.contains('active'), false);
-        // Kept mounted (drawer collapsed) so the stage still shows the tab.
+        // Re-open the drawer and keep it mounted: after a PASS the stage should
+        // show the mode's full layout, not just the collapsed tab.
+        tip.click();
       },
     ],
     [
@@ -191,14 +193,22 @@ export function coreChecks(XqShare, label) {
       'two instances keep their markup and clipboard results separate',
       () => {
         const hostA = document.querySelector('#dupA');
-        const hostB = document.querySelector('#dupB');
-        prepareStage(hostA, 'instance A');
-        prepareStage(hostB, 'instance B');
+        prepareStage(hostA, 'second instance');
         mountWidget(XqShare, { host: hostA, url: 'https://a.example/' });
-        mountWidget(XqShare, { host: hostB, url: 'https://b.example/' });
         assert.equal(hostA.querySelectorAll('.xqshare').length, 1);
-        assert.equal(hostB.querySelectorAll('.xqshare').length, 1);
-        // Both stay mounted: they are the proof that ids/state never collide.
+
+        // The second instance lives in a throwaway host: the page only keeps
+        // one extra widget on display, but the isolation proof needs two alive
+        // at the same time.
+        const hostB = document.createElement('div');
+        document.body.appendChild(hostB);
+        try {
+          mountWidget(XqShare, { host: hostB, url: 'https://b.example/' });
+          assert.equal(hostB.querySelectorAll('.xqshare').length, 1);
+          assert.equal(hostA.querySelectorAll('.xqshare').length, 1);
+        } finally {
+          hostB.remove();
+        }
       },
     ],
     [
@@ -225,7 +235,7 @@ export function coreChecks(XqShare, label) {
     [
       'leaves every stage mounted after the run',
       () => {
-        for (const id of ['shareHost', 'popHost', 'slideHost', 'dupA', 'dupB']) {
+        for (const id of ['shareHost', 'popHost', 'slideHost', 'dupA']) {
           const host = document.querySelector(`#${id}`);
           assert(host, `#${id} is missing`);
           assert.equal(
