@@ -8,7 +8,7 @@ import { assert, click, waitFor } from './checks.js';
  * `pop` additionally gets a trigger, because that mode renders a modal that
  * starts closed and would otherwise look like "nothing mounted".
  */
-function prepareStage(host, label, { trigger } = {}) {
+function prepareStage(host, label, { trigger, note } = {}) {
   host.textContent = '';
 
   const head = document.createElement('div');
@@ -18,6 +18,13 @@ function prepareStage(host, label, { trigger } = {}) {
   tag.textContent = label;
   head.appendChild(tag);
   host.appendChild(head);
+
+  if (note) {
+    const tip = document.createElement('p');
+    tip.className = 'stage-note';
+    tip.textContent = note;
+    host.appendChild(tip);
+  }
 
   if (!trigger) return null;
 
@@ -139,7 +146,9 @@ export function coreChecks(XqShare, label) {
       'slide mode toggles its drawer from the tip button',
       () => {
         const host = document.querySelector('#slideHost');
-        prepareStage(host, 'slide');
+        prepareStage(host, 'slide', {
+          note: '该模式固定在浏览器窗口右缘（中上），看本页右侧的红色“分享至”标签；点它可展开/收起。',
+        });
         const slide = mountWidget(XqShare, {
           host,
           type: 'slide',

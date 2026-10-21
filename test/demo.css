@@ -237,17 +237,14 @@ h2 {
     outline: none;
 }
 
-/* Slide mode is `position: fixed` against the viewport, which floats its tab
-   over the checks panel and leaves its stage looking empty. Pin it inside its
-   own stage instead: same widget, same transform animation, contained box. */
-#slideHost {
-    position: relative;
-    overflow: hidden;
-    min-height: 340px; /* the drawer is 300px tall + stage padding */
-}
-
-#slideHost .slide {
-    position: absolute;
+/* Slide mode is `position: fixed` to the browser window's right edge
+   (upper-middle by design), so its own stage stays empty on purpose — the
+   live widget is the tab you see on the far right of the page. */
+.stage-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
 }
 
 @media (max-width: 560px) {

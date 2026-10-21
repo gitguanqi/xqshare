@@ -77,7 +77,7 @@ test('shared browser checks expose machine-readable results', async () => {
   assert.match(runner, /is-pass/);
   assert.match(runner, /is-fail/);
   assert.match(demo, /coreChecks/);
-  assert.match(vue, /mountVue/);
+  assert.match(vue, /mountComponent/);
 });
 
 test('third-party test runtimes are pinned locally with license notices', async () => {
