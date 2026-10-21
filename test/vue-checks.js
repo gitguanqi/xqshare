@@ -85,4 +85,15 @@ await runner.run([
       assert(document.querySelectorAll('.xqshare').length === 0, 'second teardown leaked markup');
     },
   ],
+  [
+    // The suite above proves teardown works, but a visitor arriving after a PASS
+    // should land on a working widget rather than an empty page.
+    'keeps one widget mounted for manual play',
+    async () => {
+      const context = await mountVue();
+      assert.equal(document.querySelectorAll('.xqshare').length, 1, 'expected one widget');
+      assert.equal(context.instance.visible, true, 'the demo widget should stay visible');
+      // No teardown on purpose: this instance is the page's live demo.
+    },
+  ],
 ]);

@@ -1,6 +1,36 @@
 import { assert, click, waitFor } from './checks.js';
 
 /**
+ * Captions a stage so the page still explains itself once the checks finish.
+ *
+ * The checks deliberately keep their widgets mounted: a visitor opening the page
+ * after a PASS should be able to play with the demo, not stare at empty stages.
+ * `pop` additionally gets a trigger, because that mode renders a modal that
+ * starts closed and would otherwise look like "nothing mounted".
+ */
+function prepareStage(host, label, { trigger } = {}) {
+  host.textContent = '';
+
+  const head = document.createElement('div');
+  head.className = 'stage-head';
+  const tag = document.createElement('span');
+  tag.className = 'stage-label';
+  tag.textContent = label;
+  head.appendChild(tag);
+  host.appendChild(head);
+
+  if (!trigger) return null;
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'demo-trigger';
+  button.textContent = trigger.label;
+  button.addEventListener('click', trigger.onClick);
+  head.appendChild(button);
+  return button;
+}
+
+/**
  * Mounts one widget inside a host element and returns the live instance.
  * Used by the UMD and ESM pages so both exercise the same behavior suite.
  */
@@ -29,7 +59,7 @@ export function coreChecks(XqShare, label) {
       () => {
         const host = document.querySelector('#shareHost');
         assert(host, 'the share host is missing');
-        host.textContent = '';
+        prepareStage(host, 'default');
         state.instance = mountWidget(XqShare, { host, url: 'https://example.com/' });
         assert(host.querySelectorAll('.xqshare').length === 1, 'expected one widget root');
         assert(host.querySelectorAll('.xqshare-item').length === 5, 'expected five share targets');
@@ -83,8 +113,13 @@ export function coreChecks(XqShare, label) {
       'pop mode shows, locks scroll, then releases on hide',
       () => {
         const host = document.querySelector('#popHost');
-        host.textContent = '';
-        const pop = mountWidget(XqShare, {
+        // The trigger has to be in place before the widget mounts, otherwise the
+        // widget markup is appended first and the button lands inside it.
+        let pop = null;
+        prepareStage(host, 'pop', {
+          trigger: { label: '打开弹窗', onClick: () => pop?.show() },
+        });
+        pop = mountWidget(XqShare, {
           host,
           type: 'pop',
           url: 'https://example.com/pop',
@@ -96,14 +131,15 @@ export function coreChecks(XqShare, label) {
         pop.hide();
         assert.equal(pop.visible, false);
         assert.equal(document.body.style.overflow, '', 'body scroll should release');
-        pop.destroy();
+        // Intentionally not destroyed: the stage keeps the closed modal so the
+        // trigger still works after the run.
       },
     ],
     [
       'slide mode toggles its drawer from the tip button',
       () => {
         const host = document.querySelector('#slideHost');
-        host.textContent = '';
+        prepareStage(host, 'slide');
         const slide = mountWidget(XqShare, {
           host,
           type: 'slide',
@@ -123,7 +159,7 @@ export function coreChecks(XqShare, label) {
         tip.click();
         assert.equal(tip.getAttribute('aria-expanded'), 'false');
         assert.equal(box.classList.contains('active'), false);
-        slide.destroy();
+        // Kept mounted (drawer collapsed) so the stage still shows the tab.
       },
     ],
     [
@@ -156,25 +192,50 @@ export function coreChecks(XqShare, label) {
       () => {
         const hostA = document.querySelector('#dupA');
         const hostB = document.querySelector('#dupB');
-        hostA.textContent = '';
-        hostB.textContent = '';
-        const a = mountWidget(XqShare, { host: hostA, url: 'https://a.example/' });
-        const b = mountWidget(XqShare, { host: hostB, url: 'https://b.example/' });
+        prepareStage(hostA, 'instance A');
+        prepareStage(hostB, 'instance B');
+        mountWidget(XqShare, { host: hostA, url: 'https://a.example/' });
+        mountWidget(XqShare, { host: hostB, url: 'https://b.example/' });
         assert.equal(hostA.querySelectorAll('.xqshare').length, 1);
         assert.equal(hostB.querySelectorAll('.xqshare').length, 1);
-        a.destroy();
-        b.destroy();
+        // Both stay mounted: they are the proof that ids/state never collide.
       },
     ],
     [
       'destroy removes the markup and its listeners',
       () => {
-        const host = state.instance?.element?.parentElement ?? document.querySelector('#shareHost');
-        const before = host.querySelectorAll('.xqshare').length;
-        assert(before >= 1, 'no widget to destroy');
-        state.instance.destroy();
-        assert.equal(host.querySelectorAll('.xqshare').length, 0, 'destroy left markup behind');
-        assert.equal(state.instance.element, null, 'instance root was not cleared');
+        // Destroy on a throwaway host, so the visible demo instances survive the
+        // run instead of vanishing as soon as the suite finishes.
+        const host = document.createElement('div');
+        document.body.appendChild(host);
+        try {
+          const throwaway = mountWidget(XqShare, {
+            host,
+            url: 'https://example.com/destroy',
+          });
+          assert.equal(host.querySelectorAll('.xqshare').length, 1, 'no widget to destroy');
+          throwaway.destroy();
+          assert.equal(host.querySelectorAll('.xqshare').length, 0, 'destroy left markup behind');
+          assert.equal(throwaway.element, null, 'instance root was not cleared');
+        } finally {
+          host.remove();
+        }
+      },
+    ],
+    [
+      'leaves every stage mounted after the run',
+      () => {
+        for (const id of ['shareHost', 'popHost', 'slideHost', 'dupA', 'dupB']) {
+          const host = document.querySelector(`#${id}`);
+          assert(host, `#${id} is missing`);
+          assert.equal(
+            host.querySelectorAll('.xqshare').length,
+            1,
+            `#${id} lost its widget`,
+          );
+        }
+        assert(state.instance?.element, 'the default instance is no longer mounted');
+        assert.equal(state.instance.visible, true, 'the default widget should stay visible');
       },
     ],
   ];

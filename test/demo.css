@@ -195,6 +195,48 @@ h2 {
     min-width: 0;
 }
 
+/* Stage captions are added by share-demo.js. The `pop` stage also carries a
+   trigger, because that mode renders a modal that starts closed. */
+.stage-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+    min-width: 0;
+}
+
+.stage-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.demo-trigger {
+    flex: 0 0 auto;
+    padding: 6px 12px;
+    color: #f7fbf8;
+    background: var(--forest);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.demo-trigger:hover,
+.demo-trigger:focus-visible {
+    border-color: var(--amber);
+    outline: none;
+}
+
 @media (max-width: 560px) {
     .test-stage-grid {
         grid-template-columns: minmax(0, 1fr);
