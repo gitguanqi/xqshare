@@ -244,7 +244,9 @@
 
 .slide {
     position: fixed;
-    top: 50%;
+    /* Upper-middle of the right edge: `top: 30%` + translateY(-50%) puts the
+       drawer's center a third down the viewport instead of dead-center. */
+    top: 30%;
     right: 0;
     height: 300px;
     /* Animating a transform keeps the transition off the layout path; the old
