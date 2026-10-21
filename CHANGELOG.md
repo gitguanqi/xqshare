@@ -4,6 +4,22 @@ All notable changes to this project are documented in this file. The format is
 based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres
 to [Semantic Versioning](https://semver.org/) once it reaches 1.0.0.
 
+## [0.1.2] - 2026-10-21
+
+### Changed
+- Bumped to `0.1.2`; no functional changes.
+
+## [0.1.1] - 2026-10-21
+
+### Fixed
+- Pop modal flashing visible for one frame on initial load: the closed panel was
+  hidden only by `xqshare.css`, so when a consumer's bundler injects that CSS
+  after the JS runs the modal painted as unstyled content, then hid once the
+  stylesheet applied. The closed pop is now hidden with inline styles at
+  construction (`opacity: 0; visibility: hidden; pointer-events: none`), which is
+  independent of the stylesheet, while `show()`/`hide()` still drive the
+  CSS-based fade + lift animation.
+
 ## [0.1.0] - 2026-10-21
 
 First maintainable release. Rebuilt the package around a single TypeScript core
@@ -66,13 +82,6 @@ component is now a thin host around that core.
   nothing.
 - `transition: all` animating `right` (layout thrash) and missing `<img>`
   dimensions (CLS).
-- Pop modal flashing visible for one frame on initial load: the closed panel was
-  hidden only by `xqshare.css`, so when a consumer's bundler injects that CSS
-  after the JS runs the modal painted as unstyled content, then hid once the
-  stylesheet applied. The closed pop is now hidden with inline styles at
-  construction (`opacity: 0; visibility: hidden; pointer-events: none`), which is
-  independent of the stylesheet, while `show()`/`hide()` still drive the
-  CSS-based fade + lift animation.
 
 ### Migration
 See `README.md` / `zh.md` "Migrating from 0.0.x" for the breaking changes and the

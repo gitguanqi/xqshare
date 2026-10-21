@@ -1,6 +1,6 @@
 {
   "name": "xqshare",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A small share widget (default / pop / slide) for browsers, a UMD global, an ES module and a Vue 2/3 component.",
   "main": "lib/js/xqshare.js",
   "module": "lib/js/xqshare-esm.mjs",
