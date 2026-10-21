@@ -48,10 +48,15 @@ component is now a thin host around that core.
   bind visibility and emit `update:*` events.
 - Build target raised to **ES2018**; IE is no longer supported.
 - Slide mode keeps its tab centered on the right edge (the tip is centred
-  inside the 300px drawer, and the box straddles the viewport middle); the
-  collapsed state hides the whole drawer (`translate(calc(100% - 40px))`), and
-  the expanded drawer fills its frame with evenly spaced targets instead of
-  cramming them into a 50px band.
+  against the drawer, and the box straddles the viewport middle); the collapsed
+  state hides the whole drawer (`translate(calc(100% - 40px))`), and the
+  expanded drawer hugs its five targets instead of stretching them across a
+  fixed 300px slab.
+- Opening motion: `pop` fades its scrim and lifts its panel in
+  (`translateY(10px) scale(.97)` → none) instead of switching `display`, and
+  `slide` eases out on `cubic-bezier(.22, .61, .36, 1)`. Under
+  `prefers-reduced-motion: reduce` both are shortened to 120ms rather than
+  removed.
 
 ### Fixed
 - Strict-mode `event` global reference that crashed the ESM build in Firefox.
