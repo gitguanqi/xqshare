@@ -98,33 +98,10 @@
         if (typeof h !== 'function') {
           throw new Error('no render function factory (this.$createElement / Vue.h) available');
         }
-        var self = this;
-        return h('section', { class: 'test-vue-shell' }, [
-          h('div', { class: 'test-vue-actions' }, [
-            h(
-              'button',
-              {
-                class: 'is-primary',
-                on: {
-                  click: function () {
-                    self.toggleWidget();
-                  },
-                },
-              },
-              'Toggle',
-            ),
-          ]),
-          h('div', { class: 'test-vue-layout' }, [
-            h('div', { class: 'test-stage' }, [h('div', { ref: 'host', class: 'share-host' })]),
-            h('aside', {}, [
-              h(
-                'div',
-                { class: 'test-status', attrs: { role: 'status', 'aria-live': 'polite' } },
-                [h('span', {}, self.status)],
-              ),
-            ]),
-          ]),
-        ]);
+        // Nothing but the widget host: the surrounding stage chrome (captions,
+        // triggers) is built by the page scripts so every consumption path —
+        // UMD, ESM and Vue — demos the exact same layout.
+        return h('div', { ref: 'host', class: 'share-host' });
       },
     };
   }

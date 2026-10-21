@@ -253,47 +253,6 @@ h2 {
     }
 }
 
-.test-vue-shell {
-    min-width: 0;
-}
-
-.test-vue-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 14px;
-}
-
-.test-vue-actions button {
-    padding: 8px 14px;
-    font: inherit;
-    color: #f7fbf8;
-    background: var(--forest);
-    border: 1px solid transparent;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.test-vue-actions button:hover,
-.test-vue-actions button:focus-visible {
-    border-color: var(--amber);
-    outline: none;
-}
-
-.test-vue-layout {
-    display: grid;
-    gap: 16px;
-}
-
-.test-status {
-    padding: 10px 12px;
-    color: var(--muted);
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    font-size: 13px;
-}
-
 .test-editor {
     min-width: 0;
     height: 620px;
