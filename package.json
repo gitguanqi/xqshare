@@ -1,6 +1,6 @@
 {
   "name": "xqshare",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A small share widget (default / pop / slide) for browsers, a UMD global, an ES module and a Vue 2/3 component.",
   "main": "lib/js/xqshare.js",
   "module": "lib/js/xqshare-esm.mjs",
@@ -8,8 +8,12 @@
   "unpkg": "lib/js/xqshare.min.js",
   "jsdelivr": "lib/js/xqshare.min.js",
   "types": "lib/types/index.d.ts",
+  "llms": "./llms.txt",
+  "agents": "./skills/xqshare/SKILL.md",
   "files": [
     "lib",
+    "skills",
+    "llms.txt",
     "zh.md",
     "README.md",
     "CHANGELOG.md"
@@ -40,7 +44,7 @@
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "node scripts/build.mjs",
     "pretest": "node scripts/build.mjs",
-    "test": "node --test test/package.test.mjs test/share-url.test.mjs test/bundle.test.mjs test/vue.test.mjs test/browser-pages.test.mjs",
+    "test": "node --test test/package.test.mjs test/share-url.test.mjs test/bundle.test.mjs test/vue.test.mjs test/browser-pages.test.mjs test/agents.test.mjs",
     "test:browser": "node scripts/demo-server.mjs",
     "test:browser:check": "node scripts/test-browser.mjs",
     "verify": "npm run typecheck && npm test && npm run test:browser:check"

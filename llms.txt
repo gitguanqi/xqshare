@@ -1,0 +1,139 @@
+# xqshare
+
+A small browser share widget (inline bar, centred `pop` dialog, edge `slide` tab)
+shipped as a UMD global, an ES module and a Vue 2 / Vue 3 component. Share icons
+are bundled, so it works offline with no runtime CDN dependency.
+
+## Install
+
+```sh
+npm i xqshare
+```
+
+## Imports
+
+```js
+// CommonJS (also the UMD build; the module *is* the constructor)
+const XqShare = require('xqshare');
+
+// ESM — default and named export are the same class
+import XqShare, { XqShare as NamedXqShare, buildShareUrl } from 'xqshare';
+
+// Vue 2 / Vue 3 plugin, registers the component as `xqShare` (<xq-share>)
+import xqshare from 'xqshare/vue';
+import 'xqshare/css/xqshare.min.css';
+
+// Browser <script>: exposes the global `XqShare`
+// https://unpkg.com/xqshare/lib/js/xqshare.min.js
+// https://unpkg.com/xqshare/lib/css/xqshare.min.css
+```
+
+Import paths that exist: `xqshare`, `xqshare/vue`, `xqshare/css/*`,
+`xqshare/lib/vue/index.vue`, `xqshare/lib/*`, `xqshare/package.json`.
+
+## Exported API
+
+- `XqShare` (default + named) — the widget class. `new XqShare(options)` needs a
+  live DOM; it throws when `document` is undefined (SSR) and when `el` does not
+  resolve (`XqShareError` code `host-missing`). `XqShare.version` is a string.
+- `XqShareError` — `Error` subclass with a stable `code`:
+  `bad-el | host-missing | bad-mode | bad-target | popup-blocked`.
+  Message text is prefixed `XqShare Error: `; match on `code`, never on text.
+- `buildShareUrl(type, payload): string | null` — encodes the destination URL.
+  Returns `null` for `wechat` (no web endpoint) and for unknown names; never throws.
+- `getShareTarget(name): ShareTargetDefinition | null` — `{ name, label, icon, build }`.
+- `isShareTargetName(value): value is ShareTargetName` — type guard.
+- `DEFAULT_TARGETS` — `['qq', 'qzone', 'weibo', 'douban', 'tieba']` (what the
+  widget renders when `targets` is omitted).
+- `SHARE_TARGETS` — all six definitions, including `wechat` (opt-in).
+- `ICON_CDN_BASE` — `https://xqgj.cc/xqcdn/libs/xqshare/img/`, the last-resort icon base.
+- `VERSION` — package version string.
+- Types (no runtime value): `XqShareOptions`, `ResolvedOptions`, `ShareMode`,
+  `ShareTargetName`, `CopyTarget`, `CopyMethod`, `CopyResult`, `SharePayload`,
+  `ShareResult`, `XqShareErrorCode`, `VueApp`, `XqShareVuePlugin`.
+
+## Key Options
+
+- `el` — **required**, `string | Element`. Must already be in the document.
+- `type` — `'default' | 'pop' | 'slide'`, default `'default'`. Only `pop` renders
+  the URL / iframe copy fields and the close button.
+- `url` — default `location.href`. Always encoded by `buildShareUrl`.
+- `title` — default `document.title`.
+- `desc` — default `meta[name="description"]`, else `''`. Used by `qq` / `qzone`.
+- `targets` — subset and order of the six names. Unknown name throws `bad-target`
+  (duplicates are dropped). `wechat` copies the link instead of opening a tab.
+- `iconBase` — directory with a trailing slash for `share_*.png`. Default: the
+  directory next to the loaded script/module, else `ICON_CDN_BASE`.
+- `visible` — default `type !== 'pop'`, so a `pop` widget starts hidden.
+- `closeOnMask` — default `true`; backdrop click closes `pop` only.
+- `onShare(ShareResult)` — after a destination is triggered; `opened` is `false`
+  for `wechat` and for a blocked popup.
+- `onCopy(CopyResult)` — after a clipboard write, including the `wechat` path.
+- `onToggle(visible)` — on every open / close caused by `show()` / `hide()` /
+  `update()`, not on the initial silent mount.
+- `onError(XqShareError)` — recoverable problems. Also `console.warn`-ed.
+
+## Instance
+
+- `element: HTMLElement | null`, `visible: boolean`, `mode: ShareMode`,
+  `options: Readonly<ResolvedOptions>` (getters; `element` is `null` after `destroy()`).
+- `show()`, `hide()`, `toggle(): this`
+- `share(type, url?, title?, desc?): ShareResult` — unknown `type` is reported via
+  `onError` and returns `opened: false`.
+- `copy(target = 'url'): Promise<CopyResult>` — `target` is `'url' | 'iframe'`;
+  legacy ids (`'#previewUrl'`, `'#iframeUrl'`, `'code'`) are still accepted.
+  Resolves with `method: 'failed'` instead of rejecting.
+- `setUrl(url, title?): this` — updates the shared URL and the copy fields.
+- `update(patch): this` — re-resolves options and rebuilds the markup in place
+  (no duplicate nodes or listeners). Throws `bad-el` after `destroy()`.
+- `destroy(): void` — removes the markup, every listener and the scroll lock;
+  idempotent.
+
+## Vue component
+
+`<xq-share>` props: `type`, `url`, `title`, `desc`, `targets`, `iconBase`,
+`closeOnMask`, `show` (Vue 2), `modelValue` (Vue 3). Events: `update:modelValue`,
+`update:show`, `share`, `copy`, `toggle`. There is no `onShare` prop — use
+`@share`. The component owns exactly one `XqShare` instance and destroys it on
+`beforeUnmount` / `beforeDestroy`.
+
+## Typical Use
+
+```js
+import XqShare from 'xqshare';
+import 'xqshare/css/xqshare.min.css';
+
+const widget = new XqShare({
+  el: '#shareHost',        // must already exist
+  type: 'pop',             // starts hidden; call widget.show() to open
+  url: location.href,
+  title: document.title,
+  targets: ['qq', 'qzone', 'weibo', 'wechat'],
+  onShare: (result) => console.log(result.type, result.opened),
+  onError: (error) => console.warn(error.code),
+});
+
+widget.setUrl('https://example.com/post/1', 'Post title');
+widget.show();
+// SPA unmount:
+widget.destroy();
+```
+
+## Constraints
+
+- Browser only. Bundles target ES2018; no Internet Explorer. Chrome 63+,
+  Edge 79+, Firefox 58+, Safari 12+.
+- The markup is injected as `innerHTML` and every hook is a `data-*` attribute
+  scoped to the instance root — never query `.xqshare-*` globally, and do not
+  reuse one instance across two hosts.
+- Popup blocking is reported through `onError('popup-blocked')`, not thrown.
+  `share()` must run inside the click handler to keep `window.open` alive.
+- `copy()` needs a user gesture for `navigator.clipboard`; otherwise it falls
+  back to `document.execCommand('copy')` and reports `method: 'execCommand'`.
+- When the JS is bundled (webpack/vite/rollup) the auto-detected icon directory
+  may point at a hashed asset path. Set `iconBase` explicitly (copy `lib/img/`
+  to your public dir, or pass `${ICON_CDN_BASE}`) if icons 404.
+- Styles are required: `pop` guards its closed state with inline styles, but the
+  bar and slide layouts, transitions and icon sizing come from `xqshare.css`.
+- Fine-grained integration notes ship in `skills/xqshare/SKILL.md`
+  (`package.json#agents`).

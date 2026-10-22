@@ -4,6 +4,35 @@ All notable changes to this project are documented in this file. The format is
 based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres
 to [Semantic Versioning](https://semver.org/) once it reaches 1.0.0.
 
+## [0.1.3] - 2026-10-22
+
+### Added
+- `llms.txt` at the package root, wired through `package.json#llms`, summarising
+  the imports, runtime exports, option defaults, instance methods and runtime
+  constraints for AI agents.
+- Portable integration skill at `skills/xqshare/SKILL.md`
+  (`package.json#agents`), covering entry-point selection, mount order, mode
+  semantics, icon and stylesheet requirements, SPA teardown and common failure
+  modes.
+- `skills/xqshare/references/api.md` and `references/vue.md` with the complete
+  option/instance/type tables, error codes, DOM hooks, custom events and the
+  Vue 2 / Vue 3 prop-event contract.
+- `llms.txt` and `skills` added to the `files` whitelist, so both ship in the
+  npm tarball.
+- `test/agents.test.mjs` (part of `npm test`): validates the metadata targets,
+  tarball coverage, skill frontmatter, reference links, and that every runtime
+  export, `XqShareOptions` field, instance member, error code, Vue prop and Vue
+  event is documented.
+
+### Changed
+- Bumped to `0.1.3`; no runtime API, entry-point or behaviour changes.
+- Commit hygiene is now enforced by tooling that stays out of the published
+  tarball: `commitlint` with `@commitlint/config-conventional` (conventional
+  types only) rejects malformed messages through `.husky/commit-msg`, and
+  `lint-staged` runs `npm run typecheck` from `.husky/pre-commit` whenever a
+  staged `*.ts` or `*.vue` file changes. `npm run commitlint` is available for
+  manual checks.
+
 ## [0.1.2] - 2026-10-21
 
 ### Changed

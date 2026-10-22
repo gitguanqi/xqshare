@@ -145,6 +145,22 @@ npm run verify            # typecheck + node tests + browser checks
 `test/browser.html`, `test/esm.html`, `test/vue2.html` and `test/vue3.html` are
 self-contained and report PASS / FAIL inline.
 
+## Machine-readable docs for AI agents
+
+The tarball carries two agent-facing documents next to the API above:
+
+| File | Purpose |
+|------|---------|
+| `llms.txt` (`package.json#llms`) | Compact API summary: imports, runtime exports, option defaults, instance methods, constraints. Start here. |
+| `skills/xqshare/SKILL.md` (`package.json#agents`) | Portable integration skill: which entry to load, mount order, mode semantics, Icon/CSS requirements, SPA teardown, failure-mode table. |
+| `skills/xqshare/references/api.md` | Exhaustive options, instance table, types, error codes, DOM hooks, events. |
+| `skills/xqshare/references/vue.md` | Vue 2 / Vue 3 props, events, `v-model` split and pitfalls. |
+
+`npm test` includes `test/agents.test.mjs`, which fails when those documents drift
+from the shipped API (an export, option, error code, prop or event that is no
+longer documented), when a link in the skill stops resolving, or when the
+metadata stops pointing at a published file.
+
 ## Migrating from 0.0.x
 
 `0.1.0` is a breaking release (still pre-`1.0`):

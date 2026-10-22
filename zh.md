@@ -140,6 +140,20 @@ npm run verify             # 类型检查 + node 测试 + 浏览器检查
 `test/browser.html`、`test/esm.html`、`test/vue2.html`、`test/vue3.html` 都是自包含的，
 页面内会直接显示 PASS / FAIL。
 
+## 面向 AI 智能体的文档
+
+发布包里除了上面的 API，还带有两份给智能体读的文档：
+
+| 文件 | 用途 |
+|------|------|
+| `llms.txt`（`package.json#llms`） | 精简 API 摘要：导入方式、运行时导出、选项默认值、实例方法、约束。先读这个。 |
+| `skills/xqshare/SKILL.md`（`package.json#agents`） | 可移植的集成技能：入口选择、挂载顺序、三种模式语义、图标与样式前提、SPA 销毁、常见故障表。 |
+| `skills/xqshare/references/api.md` | 完整选项表、实例成员、类型、错误码、DOM 钩子与事件。 |
+| `skills/xqshare/references/vue.md` | Vue 2 / Vue 3 的 props、事件、`v-model` 差异与注意事项。 |
+
+`npm test` 会跑 `test/agents.test.mjs`：一旦有导出、选项、错误码、prop 或事件
+在文档里缺失，或技能内的链接失效、元数据指向未被打包的文件，测试就会失败。
+
 ## 从 0.0.x 迁移
 
 `0.1.0` 是破坏性版本（仍处于 `0.x`）：
