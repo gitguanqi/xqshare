@@ -47,7 +47,9 @@
     "test": "node --test test/package.test.mjs test/share-url.test.mjs test/bundle.test.mjs test/vue.test.mjs test/browser-pages.test.mjs test/agents.test.mjs",
     "test:browser": "node scripts/demo-server.mjs",
     "test:browser:check": "node scripts/test-browser.mjs",
-    "verify": "npm run typecheck && npm test && npm run test:browser:check"
+    "verify": "npm run typecheck && npm test && npm run test:browser:check",
+    "commitlint": "commitlint --edit",
+    "prepare": "husky"
   },
   "engines": {
     "node": ">=18"
@@ -71,7 +73,11 @@
   },
   "homepage": "https://github.com/gitguanqi/xqshare#readme",
   "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "esbuild": "^0.28.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "typescript": "^7.0.2"
   }
 }
